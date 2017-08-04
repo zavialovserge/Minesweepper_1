@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="Minesweeper.View.SettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Minesweeper.View"
+             xmlns:vm="clr-namespace:Minesweeper.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="200"
+             Background="LightGray">
+    <UserControl.DataContext>
+    <vm:ViewModelLocator/>
+    </UserControl.DataContext>
+    <Grid DataContext="{Binding Setting}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Content="Кол-во клеточек" 
+               VerticalContentAlignment="Center" 
+               HorizontalContentAlignment="Center"
+               Background="LightGray"
+               BorderBrush="Black"
+               BorderThickness="1"/>
+        <TextBox Grid.Column="1" 
+               Text="{Binding CountOfCells}" 
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center"
+               Background="LightGray"
+                 BorderBrush="Black"
+               BorderThickness="1"/>
+        <Label Grid.Row="1" 
+               Content="Уровень сложности" 
+               VerticalContentAlignment="Center" 
+               HorizontalContentAlignment="Center"
+               BorderBrush="Black"
+               BorderThickness="1"/>
+        <ComboBox Grid.Column="1" 
+                  Grid.Row="1" 
+                  ItemsSource="{Binding DifficultCollection,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding Difficult}" 
+                  VerticalContentAlignment="Center" 
+                  HorizontalContentAlignment="Center" 
+                  x:Name="DifficulComboBox" 
+                  SelectionChanged="DifficulComboBox_SelectionChanged"
+                  Background="LightGray"
+                  BorderBrush="Black"
+                BorderThickness="1"
+                  
+                  />
+        <Label Grid.Row="2" 
+               Content="Рекорд" 
+               VerticalContentAlignment="Center" 
+               HorizontalContentAlignment="Center"
+               BorderBrush="Black"
+               BorderThickness="1"/>
+        <Label Grid.Row="2" 
+               Grid.Column="2"
+               Content="{Binding userRecord,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" 
+               VerticalContentAlignment="Center" 
+               HorizontalContentAlignment="Center"
+               BorderBrush="Black"
+               BorderThickness="1"/>
+        <Button Grid.Row="3" 
+                Content="Сохранить изменения" 
+                VerticalContentAlignment="Center" 
+                HorizontalContentAlignment="Center"
+                Background="LightGray"               
+                BorderBrush="Black"
+               BorderThickness="1"
+                Command="{Binding ChangeSettings,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Column="2" 
+                Grid.Row="3" 
+                Content="Настройки по умолчанию"
+                VerticalContentAlignment="Center" 
+                HorizontalContentAlignment="Center"
+                Background="LightGray"
+                BorderBrush="Black"
+                BorderThickness="1"                
+                Command="{Binding ResetSettings,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+</UserControl>
