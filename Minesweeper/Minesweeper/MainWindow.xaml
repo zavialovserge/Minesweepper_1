@@ -1,0 +1,133 @@
+﻿<Window x:Class="Minesweeper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:Minesweeper.ViewModel"
+        xmlns:local="clr-namespace:Minesweeper"
+        xmlns:view="clr-namespace:Minesweeper.View"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="800" Loaded="Window_Loaded"  Background="LightGray" >
+    
+    <Window.DataContext>
+        <viewModel:ViewModelLocator/>
+    </Window.DataContext>
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="C:\Users\zavia\Desktop\MoneySaver\Wpf\Minesweeper\Minesweeper\Resource\Resource.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+    </Window.Resources>
+
+    <Grid DataContext="{Binding Main.Game}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <UserControl Panel.ZIndex="1"  
+                     Grid.Row="1"
+                     DataContext="{Binding viewModel.Settings}"
+                     Visibility="{Binding Visible,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     Height="300"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     x:Name="SettingsControl">
+            
+                <view:SettingView />
+           
+        </UserControl>
+        
+        <Grid  Grid.Column="0" Grid.ColumnSpan="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.3*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="{Binding BombCounter,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   Background="Black"
+                   Foreground="Red"
+                   FontSize="25"
+                   Height="100" 
+                   Width="100"/>
+            
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        >
+                <Button Height="100" 
+                    Width="100"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    Command="{Binding ShowSettings}"
+                    IsEnabled="{Binding IsEnable}">
+                    <Button.Content>
+                        <Image Source="C:\Users\zavia\Desktop\MoneySaver\Wpf\Minesweeper\Minesweeper\Resource\Image\gear.png"/>
+                    </Button.Content>
+                </Button>
+
+                <Button Height="100" 
+                    Width="100"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    Command="{Binding viewModel.NewGame,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding IsEnable,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
+                <Button.Content>
+                        <Image Source="C:\Users\zavia\Desktop\MoneySaver\Wpf\Minesweeper\Minesweeper\Resource\Image\restart.png"/>
+                </Button.Content>
+            </Button>
+            </StackPanel>
+            <Label     Grid.Column="2"
+                       Content="{Binding time,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       HorizontalContentAlignment="Center"  
+                       VerticalContentAlignment="Center"
+                       Background="Black"
+                       Foreground="Red"
+                       FontSize="25"
+                       Height="100" 
+                       Width="120"
+                       IsEnabled="True"
+                       />
+
+        </Grid>
+        <ItemsControl  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding cells,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid  Rows="{Binding GlobalCount,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                 Columns="{Binding GlobalCount,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
+                    </UniformGrid>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Background="SeaShell"
+                            IsEnabled="{Binding Game.IsEnable,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" >
+                        <Button.Content >
+                            <Image Source="{Binding imageUri,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
+                        </Button.Content>
+                        <Button.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding LeftClick,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
+                            <MouseBinding Gesture="RightClick" Command="{Binding RightClick,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
+                            <MouseBinding MouseAction="MiddleClick" Command="{Binding MiddleClick,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" CommandParameter="{Binding}"/>
+                        </Button.InputBindings>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+    </Grid>
+</Window>
